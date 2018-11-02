@@ -143,9 +143,13 @@ class User < ApplicationRecord
     merchant_by_speed(quantity, :desc)
   end
 
+  def to_param
+    slug
+  end
+  
   private
   def generate_slug
-    self.slug = name.downcase.delete(" ")
+    self.slug = name.downcase.delete(" ") if name
   end
 
 end

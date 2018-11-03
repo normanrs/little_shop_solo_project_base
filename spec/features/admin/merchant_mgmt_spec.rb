@@ -14,8 +14,6 @@ RSpec.describe 'Admin-only merchant management' do
     click_button 'Log in'
 
     visit merchants_path
-save_and_open_page
-
     within "#merchant-#{@active_merchant.id}" do
       click_button "Disable"
     end

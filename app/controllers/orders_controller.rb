@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
       else
         @orders = current_user.orders.where.not(status: :disabled)
       end
-    elsif params[:slug] && request.fullpath == "/users/#{params[:slug]}/orders"
+    elsif params[:user_slug] && request.fullpath == "/users/#{params[:user_slug]}/orders"
       @user = User.find_by(slug: params[:user_slug])
       if current_admin?
         @orders = Order.all

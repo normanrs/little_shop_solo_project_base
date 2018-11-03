@@ -54,14 +54,12 @@ class UsersController < ApplicationController
               @user.role = :merchant
             end
           end
-
-          @user.save!
-
+          @user.save
           flash[:success] = 'Profile data was successfully updated.'
           if params[:toggle] && params[:toggle] != 'role' && @user.merchant?
-            redirect_to merchants_path
+            redirect_to merchants_path, turbolinks: false
           else
-            redirect_to users_path
+            redirect_to users_path, turbolinks: false
           end
         else
           if @user.update(user_params)

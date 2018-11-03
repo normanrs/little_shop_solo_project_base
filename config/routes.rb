@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     patch 'disable', to: 'users#update'
   end
 
-  resources :merchants, only: [:index, :update, :show] do
+  resources :merchants, only: [:index, :update, :show], param: :slug do
     resources :orders, only: [:index]
     resources :items, only: [:index, :new, :edit, :create, :update] do
       patch 'enable', to: 'items#update'

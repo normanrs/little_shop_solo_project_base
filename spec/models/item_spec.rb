@@ -35,5 +35,25 @@ RSpec.describe Item, type: :model do
   end
 
   describe 'Instance Methods' do
+    it '.generate_slug' do
+      user = create(:user)
+      merchants = create_list(:merchant, 2)
+      item_1 = create(:item, user: merchants[0])
+      item_2 = create(:item, user: merchants[0])
+      item_3 = create(:item, user: merchants[1])
+      item_4 = create(:item, name: "test1", user: merchants[1])
+      item_5 = create(:item, name: "test1", user: merchants[1])
+      orders = create_list(:completed_order, 2, user: user)
+      create(:fulfilled_order_item, quantity: 10, item: item_1, order: orders[0])
+      create(:fulfilled_order_item, quantity: 20, item: item_2, order: orders[0])
+      create(:fulfilled_order_item, quantity: 40, item: item_3, order: orders[1])
+      create(:fulfilled_order_item, quantity: 30, item: item_4, order: orders[1])
+      create(:fulfilled_order_item, quantity: 20, item: item_5, order: orders[1])
+      slug1 = item_1.slug
+      expected = item_1.name.downcase.parameterize
+      expect(slug1).to eq(expected)
+      expect(item_4.slug).to_not eq(item_5.slug)
+    end
+
   end
 end

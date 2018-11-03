@@ -15,14 +15,14 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
+    @item = Item.find_by(slug: params[:id])
   end
 
   def edit
     render file: 'errors/not_found', status: 404 if current_user.nil?
     @merchant = User.find_by(slug: params[:merchant_slug])
     render file: 'errors/not_found', status: 404 unless current_admin? || current_user == @merchant
-    @item = Item.find(params[:id])
+    @item = Item.find_by(slug: params[:id])
     @form_url = merchant_item_path(@merchant, @item)
   end
 
@@ -48,13 +48,12 @@ class ItemsController < ApplicationController
   def update
     render file: 'errors/not_found', status: 404 if current_user.nil?
     @merchant = User.find_by(slug: params[:merchant_slug])
-    item_id = :item_id
     if params[:id]
-      item_id = :id
+      @item = Item.find_by(slug: params[:id])
+    else
+      @item = Item.find(params[:item_id])
     end
-    @item = Item.find(params[item_id])
     render file: 'errors/not_found', status: 404 unless current_admin? || current_user == @merchant
-
     if request.fullpath.split('/')[-1] == 'disable'
       flash[:success] = "Item #{@item.id} is now disabled"
       @item.active = false

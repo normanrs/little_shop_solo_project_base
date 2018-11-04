@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :items, only: [:index]
   end
 
+
   resources :orders, only: [:index, :show, :create] do
     patch ':order_item_id/fulfill', to: 'order_items#update', as: 'item_fulfill'
   end

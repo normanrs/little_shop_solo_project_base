@@ -24,8 +24,22 @@ RSpec.describe 'admin-only slug management' do
 
   end
 
-  it 'edits item slugs' do
+  it 'lists and edits item slugs' do
     visit admin_items_path
+    expect(page).to have_link(@item_1.name)
+    expect(page).to have_link(@item_2.name)
+    expect(page).to have_link(@item_3.name)
+    expect(page).to have_link(@item_4.name)
+    expect(page).to have_link(@item_5.name)
+
+    within("##{@item_1.slug}") do
+      fill_in("item_slug", with: "testslug1")
+      click_on("Update Item")
+    end
+
+    actual = @item_1.reload.slug
+    expected = "testslug1"
+    expect(actual).to eq(expected)
 
   end
 

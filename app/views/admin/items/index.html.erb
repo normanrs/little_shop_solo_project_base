@@ -1,1 +1,11 @@
 Admin Update Item Slugs
+<% @items.each do |item| %>
+  <div class="oneline", id="<%=item.slug%>">
+    <%= link_to item.name, item_path(item) %>
+    <%= form_for [:admin, item] do |f| %>
+      <%= f.label :slug  %>
+      <%= f.text_field :slug %>
+      <%= f.submit %>
+    <% end %>
+  </div>
+  <% end %>

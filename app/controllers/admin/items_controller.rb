@@ -4,6 +4,7 @@ class Admin::ItemsController < ApplicationController
   def update
     @item = Item.find_by(slug: params[:id])
     @item.update(admin_params)
+    redirect_to admin_items_path
   end
 
   def index

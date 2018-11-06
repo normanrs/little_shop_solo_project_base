@@ -1,12 +1,9 @@
 class Admin::ItemsController < ApplicationController
   before_action :require_admin
 
-
-
   def update
     @item = Item.find_by(slug: params[:id])
     @item.update(admin_params)
-    # @item.update!(admin_params)(slug: params[:item][:slug])
   end
 
   def index

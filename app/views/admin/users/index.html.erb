@@ -1,1 +1,11 @@
 Admin Update User Slugs
+<% @users.each do |user| %>
+  <div class="oneline", id="<%=user.slug%>">
+    <%= link_to user.name, user_path(user) %>
+    <%= form_for [:admin, user] do |f| %>
+      <%= f.label :slug  %>
+      <%= f.text_field :slug %>
+      <%= f.submit %>
+    <% end %>
+  </div>
+  <% end %>

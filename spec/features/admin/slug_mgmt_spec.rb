@@ -3,14 +3,15 @@ require 'rails_helper'
 RSpec.describe 'admin-only slug management' do
   before(:each) do
     @admin = create(:admin)
-    @user = create(:user)
+    @user_1 = create(:user)
+    @user_2 = create(:user)
     @merchants = create_list(:merchant, 2)
     @item_1 = create(:item, user: @merchants[0])
     @item_2 = create(:item, user: @merchants[0])
     @item_3 = create(:item, user: @merchants[1])
     @item_4 = create(:item, name: "test1", user: @merchants[1])
     @item_5 = create(:item, name: "test1", user: @merchants[1])
-    orders = create_list(:completed_order, 2, user: @user)
+    orders = create_list(:completed_order, 2, user: @user_1)
     create(:fulfilled_order_item, quantity: 10, item: @item_1, order: orders[0])
     create(:fulfilled_order_item, quantity: 20, item: @item_2, order: orders[0])
     create(:fulfilled_order_item, quantity: 40, item: @item_3, order: orders[1])
@@ -45,7 +46,17 @@ RSpec.describe 'admin-only slug management' do
 
   it 'edits user slugs' do
     visit admin_users_path
+    expect(page).to have_link(@user_1.name)
+    expect(page).to have_link(@user_2.name)
+    
+    within("##{@user_1.slug}") do
+      fill_in("user_slug", with: "testuserslug1")
+      click_on("Update User")
+    end
 
+    actual = @user_1.reload.slug
+    expected = "testuserslug1"
+    expect(actual).to eq(expected)
 
   end
 end

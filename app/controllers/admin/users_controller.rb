@@ -3,7 +3,8 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find_by(slug: params[:id])
-    @user.update!(admin_params)
+    @user.update(admin_params)
+    redirect_to admin_users_path
   end
 
   def index

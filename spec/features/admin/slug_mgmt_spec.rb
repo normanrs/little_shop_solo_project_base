@@ -48,12 +48,13 @@ RSpec.describe 'admin-only slug management' do
     visit admin_users_path
     expect(page).to have_link(@user_1.name)
     expect(page).to have_link(@user_2.name)
-    
+
     within("##{@user_1.slug}") do
       fill_in("user_slug", with: "testuserslug1")
       click_on("Update User")
     end
 
+    expect(page).to have_content("testuserslug1")
     actual = @user_1.reload.slug
     expected = "testuserslug1"
     expect(actual).to eq(expected)

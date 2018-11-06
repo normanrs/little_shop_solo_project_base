@@ -155,19 +155,38 @@ RSpec.describe 'Items Index' do
         expect(page).to have_content("Grand Total: $0.00")
       end
 
-      it 'should show discounts for qualified items in my cart' do
+      it 'should correctly show discounts for qualified items/quantities in my cart' do
         FactoryBot.reload
         item_1, item_2 = create_list(:item, 2, user: @merchant)
         discounted_item = create(:item, user: @merchant)
         discount_1 = Discount.create!( :range_low => 2,
-                                        :range_high => 4,
+                                        :range_high => 3,
                                         :percent => 4.5,
                                         :item => discounted_item)
 
-        discount_2 = Discount.create!( :range_low => 5,
-                                        :range_high => 10,
+        discount_2 = Discount.create!( :range_low => 4,
+                                        :range_high => 100,
                                         :percent => 9.5,
                                         :item => discounted_item)
+
+        visit item_path(discounted_item)
+        click_button("Add to Cart")
+
+        visit carts_path
+        within "#item-#{discounted_item.id}" do
+          expect(page).to have_content("Price: #{discounted_item.price}")
+          expect(page).to have_content("Subtotal: $#{discounted_item.price}")
+        end
+
+        visit item_path(discounted_item)
+        click_button("Add to Cart")
+
+        visit carts_path
+        within "#item-#{discounted_item.id}" do
+          realprice = (discounted_item.price * (1 - (discount_1.percent / 100))).round(2)
+          expect(page).to have_content("Price: #{realprice}")
+          expect(page).to have_content("Subtotal: $#{realprice * 2}")
+        end
 
         visit item_path(discounted_item)
         click_button("Add to Cart")
@@ -175,11 +194,11 @@ RSpec.describe 'Items Index' do
 
         visit carts_path
         within "#item-#{discounted_item.id}" do
-          realprice = (discounted_item.price * (1 - (discount_1.percent / 100))).round(2)
+          realprice = (discounted_item.price * (1 - (discount_2.percent / 100))).round(2)
           expect(page).to have_content("Price: #{realprice}")
-          expect(page).to have_content("Quantity: 2")
-          expect(page).to have_content("Subtotal: $#{realprice * 2}")
+          expect(page).to have_content("Subtotal: $#{realprice * 4}")
         end
+
       end
     end
   end

@@ -27,7 +27,7 @@ class Cart
   def remove_all_item(item_id)
     item_id_str = item_id.to_s
     if @contents.key?(item_id_str)
-      @contents.delete(item_id.to_s)      
+      @contents.delete(item_id.to_s)
     end
   end
 
@@ -35,10 +35,24 @@ class Cart
     @contents[item_id.to_s].to_i
   end
 
+  def actualprice_of(item_id)
+    theitem = Item.find(item_id)
+    theprice = theitem.price
+    theqty = @contents[item_id.to_s].to_i
+    if !theitem.discounts.empty?
+      theitem.discounts.each do |discount|
+        if theqty >= discount.range_low
+        theprice = (theitem.price * (1 - (discount.percent / 100))).round(2)
+        end
+      end
+    end
+    theprice
+  end
+
   def grand_total
     total = 0
     Item.where(id: @contents.keys).each do |item|
-      total += (item.price * count_of(item.id))
+      total += (actualprice_of(item.id) * count_of(item.id))
     end
     total
   end

@@ -37,5 +37,5 @@ order = create(:completed_order, user: user)
 create(:fulfilled_order_item, order: order, item: item_1, price: 1, quantity: 1)
 create(:fulfilled_order_item, order: order, item: item_2, price: 2, quantity: 1)
 
-User.create(email: "norm@gmail.com", password: "admin", name: "norm", address: "123 somewhere", city: "denver", state: "co", zip: "12345", role: 2, )
-User.create(email: "dude@gmail.com", password: "dude", name: "the dude", address: "123 somewhere", city: "denver", state: "co", zip: "12345")
+User.create(email: "norm@gmail.com", password: "admin", name: "norm", address: "123 somewhere", city: "denver", state: "co", zip: "12345", role: 2 )
+User.create(email: "merch@gmail.com", password: "merch", name: "normmerrch", address: "123 somewhere", city: "denver", state: "co", zip: "12345", role: 1)

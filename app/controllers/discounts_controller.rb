@@ -8,13 +8,16 @@ class DiscountsController < ApplicationController
 
   def new
     @discount = Discount.new
+    @merchant = User.find_by(slug: params[:merchant_slug])
   end
 
   def edit
   end
 
   def create
+    @merchant = User.find_by(slug: params[:merchant_slug])
     @discount = Discount.new(discount_params)
+    @discount.save
   end
 
   def update
@@ -22,10 +25,6 @@ class DiscountsController < ApplicationController
 
   def destroy
     @discount.destroy
-    respond_to do |format|
-      format.html { redirect_to discounts_url, notice: 'Discount was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private

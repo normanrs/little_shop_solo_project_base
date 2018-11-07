@@ -184,7 +184,7 @@ RSpec.describe 'Merchant Items' do
         fill_in :discount_range_high, with: 20
         fill_in :discount_percent, with: 10
         fill_in :discount_item_id, with: @item_1.id
-        click_button 'Save Discount'
+        click_button 'Create Discount'
 
         expect(Discount.all.count).to eq(1)
       end

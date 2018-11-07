@@ -149,7 +149,14 @@ class User < ApplicationRecord
 
   private
   def generate_slug
-    self.slug = name.downcase.delete(" ") if name
+    slugname = name.downcase.delete(" ") if name
+    if User.where(slug:slugname).count > 0
+      add = User.where(slug:slugname).count + 1
+      slugname = slugname + "-" + add.to_s
+      self.slug = slugname
+    else
+      self.slug = slugname
+    end
   end
 
 end

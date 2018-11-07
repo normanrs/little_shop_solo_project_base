@@ -18,6 +18,7 @@ class DiscountsController < ApplicationController
     @merchant = User.find_by(slug: params[:merchant_slug])
     @discount = Discount.new(discount_params)
     @discount.save
+    redirect_to dashboard_items_path
   end
 
   def update

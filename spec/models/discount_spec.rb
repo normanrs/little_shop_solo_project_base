@@ -18,7 +18,6 @@ RSpec.describe Discount, type: :model do
                                     :percent => 9.5,
                                     :item => @item_1)
 
-
   end
 
 

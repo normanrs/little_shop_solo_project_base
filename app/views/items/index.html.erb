@@ -71,7 +71,7 @@
 <br style="clear: both;">
 
 <% if current_user && current_user.merchant? %>
-<%= link_to 'Add New Item', new_merchant_item_path(current_user) %>
+<%= link_to 'Add New Item', new_merchant_item_path(current_user) %>   <%= link_to 'Add New Discount', new_merchant_discount_path(current_user) %>
 <% end %>
 
 <hr>

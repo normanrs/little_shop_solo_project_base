@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :discounts
   root 'welcome#show'
 
   get '/login', to: 'session#new'
@@ -39,6 +38,7 @@ Rails.application.routes.draw do
   end
 
   resources :merchants, only: [:index, :update, :show], param: :slug do
+    resources :discounts
     resources :orders, only: [:index]
     resources :items, only: [:index, :new, :edit, :create, :update] do
       patch 'enable', to: 'items#update'
